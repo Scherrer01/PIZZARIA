@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzaria Delícia</title>
+    <link rel="stylesheet" href="adm.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PIZZARIA DELÍCIA</h1>
+        <div class="logout-container">
+            <button id="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+        
+        <!-- Adicione esta div para mensagens globais -->
+        <div id="global-message" class="message-container hidden"></div>
+        
+        <div class="menu">
+            <button onclick="mostrarsecao('pedidos')">
+                <i class="fas fa-clipboard-list"></i> Fazer Pedido
+            </button>
+            <button onclick="mostrarsecao('cardapio')">
+                <i class="fas fa-pizza-slice"></i> Cardápio
+            </button>
+            <button onclick="mostrarsecao('cadastro')">
+                <i class="fas fa-plus-circle"></i> Cadastrar Pizza
+            </button>
+            <button onclick="mostrarsecao('alterar')">
+                <i class="fas fa-edit"></i> Alterar Pizza
+            </button>
+            <button onclick="mostrarsecao('relatorio')">
+                <i class="fas fa-chart-bar"></i> Relatório
+            </button>
+        </div>
+
+        <!-- Seção de Cardápio -->
+        <div id="cardapio" class="hidden">
+            <h2>Nosso Cardápio</h2>
+            <input type="text" id="busca-pizza" placeholder="Buscar pizza..." oninput="buscarPizza()">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pizza</th>
+                        <th>Ingredientes</th>
+                        <th>Preço</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-pizzas">
+                    <!-- Lista de pizzas será preenchida pelo JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Seção de Pedidos -->
+        <div id="pedidos" class="hidden">
+            <h2>Faça seu Pedido</h2>
+            <div class="form-group">
+                <label for="cliente">Nome do Cliente:</label>
+                <input type="text" id="cliente" placeholder="Digite seu nome">
+                <div id="cliente-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="pizza-pedido">Escolha a Pizza:</label>
+                <select id="pizza-pedido">
+                    <!-- Opções serão preenchidas pelo JavaScript -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" id="quantidade" min="1" value="1">
+            </div>
+            <button onclick="fazerPedido()">Adicionar ao Pedido</button>
+            
+            <h3>Seu Pedido:</h3>
+            <div id="pedido-error" class="error-message"></div>
+            <ul id="lista-pedidos">
+                <!-- Itens do pedido serão listados aqui -->
+            </ul>
+            <div id="pedido-success" class="success-message"></div>
+            <button onclick="finalizarPedido()" class="finalizar">Finalizar Pedido</button>
+        </div>
+
+        <!-- Seção de Cadastro -->
+        <div id="cadastro" class="hidden">
+            <h2>Cadastrar Nova Pizza</h2>
+            <div class="form-group">
+                <label for="nome-pizza">Nome da Pizza:</label>
+                <input type="text" id="nome-pizza" placeholder="Ex: Margherita">
+                <div id="cadastro-nome-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="ingredientes">Ingredientes:</label>
+                <input type="text" id="ingredientes" placeholder="Separados por vírgula">
+                <div id="cadastro-ingredientes-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="preco">Preço (R$):</label>
+                <input type="number" id="preco" placeholder="Ex: 45.90" step="0.01">
+                <div id="cadastro-preco-error" class="error-message"></div>
+            </div>
+            <div id="cadastro-success" class="success-message"></div>
+            <button onclick="cadastrarPizza()">Cadastrar Pizza</button>
+        </div>
+
+        <!-- Seção de Alterar Pizza -->
+        <div id="alterar" class="hidden">
+            <h2>Alterar Pizza</h2>
+            <div class="form-group">
+                <label for="pizza-alterar">Selecione a Pizza:</label>
+                <select id="pizza-alterar" onchange="carregarDadosPizza()">
+                    <option value="">Selecione uma pizza</option>
+                    <!-- Opções serão preenchidas pelo JavaScript -->
+                </select>
+                <div id="alterar-selecao-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="novo-nome">Novo Nome:</label>
+                <input type="text" id="novo-nome" placeholder="Novo nome da pizza">
+                <div id="alterar-nome-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="novos-ingredientes">Novos Ingredientes:</label>
+                <input type="text" id="novos-ingredientes" placeholder="Novos ingredientes">
+                <div id="alterar-ingredientes-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="novo-preco">Novo Preço (R$):</label>
+                <input type="number" id="novo-preco" placeholder="Novo preço" step="0.01">
+                <div id="alterar-preco-error" class="error-message"></div>
+            </div>
+            <div id="alterar-success" class="success-message"></div>
+            <button onclick="alterarPizza()">Salvar Alterações</button>
+            <button onclick="excluirPizza()" class="finalizar">Excluir Pizza</button>
+            
+            <!-- Modal de confirmação -->
+            <div id="confirm-modal" class="modal hidden">
+                <div class="modal-content">
+                    <p id="confirm-message"></p>
+                    <div class="modal-buttons">
+                        <button onclick="confirmAction()">Sim</button>
+                        <button onclick="cancelAction()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de Relatório -->
+        <div id="relatorio" class="hidden">
+            <h2>Relatório de Vendas</h2>
+            <button onclick="gerarRelatorio()">Atualizar Relatório</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Cliente</th>
+                        <th>Itens</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-relatorio">
+                    <!-- Dados serão preenchidos pelo JavaScript -->
+                </tbody>
+            </table>
+            <div id="total-vendas">
+                <h3>Total de Vendas: R$ <span id="valor-total">0.00</span></h3>
+            </div>
+        </div>
+    </div>
+
+    <script src="adm.js"></script>
+</body>
+</html>

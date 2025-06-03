@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Pizzaria Delícia</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>PIZZARIA DELÍCIA</h1>
+            <i class="fas fa-pizza-slice"></i>
+        </div>
+        
+        <div id="login" class="tab-content active">
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Usuário:</label>
+                    <input type="text" id="username" required>
+                    <div id="login-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Senha:</label>
+                    <div class="password-container">
+                        <input type="text" id="password" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha">
+                            <i class="fas fa-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+
+        <!-- Div com informações dos usuários pré-cadastrados -->
+        <div class="user-info">
+            <p><strong>Admin:</strong> Diogo - senha: admin.1</p>
+            <p><strong>Cliente:</strong> Bruno - senha: cliente.1</p>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
